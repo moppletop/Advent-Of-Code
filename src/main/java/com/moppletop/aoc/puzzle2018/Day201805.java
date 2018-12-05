@@ -34,9 +34,7 @@ public class Day201805 extends AbstractDay
 		int smallest = Integer.MAX_VALUE;
 		char[] chainChars = new char[chain.length()];
 		chain.getChars(0, chain.length(), chainChars, 0);
-
-		long time = System.currentTimeMillis();
-
+		
 		for (char ch : chainChars)
 		{
 			char lowerCh = Character.toLowerCase(ch);
@@ -63,8 +61,6 @@ public class Day201805 extends AbstractDay
 				smallest = chainLength;
 			}
 		}
-
-		System.out.println(System.currentTimeMillis() - time);
 
 		return smallest;
 	}
