@@ -1,9 +1,7 @@
 package com.moppletop.aoc.puzzle2018;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import com.moppletop.aoc.AbstractDay;
@@ -32,10 +30,14 @@ public class Day201805 extends AbstractDay
 	protected Object solvePart2()
 	{
 		Set<Character> testUnits = new HashSet<>();
-		List<Character> chain = getPolymer();
+		StringBuilder chain = getPolymer();
 		int smallest = Integer.MAX_VALUE;
+		char[] chainChars = new char[chain.length()];
+		chain.getChars(0, chain.length(), chainChars, 0);
 
-		for (char ch : chain)
+		long time = System.currentTimeMillis();
+
+		for (char ch : chainChars)
 		{
 			char lowerCh = Character.toLowerCase(ch);
 
@@ -44,8 +46,15 @@ public class Day201805 extends AbstractDay
 				continue;
 			}
 
-			List<Character> innerChain = getPolymer();
-			innerChain.removeIf(element -> lowerCh == Character.toLowerCase(element));
+			StringBuilder innerChain = getPolymer();
+
+			for (int i = 0; i < innerChain.length(); i++)
+			{
+				if (lowerCh == Character.toLowerCase(innerChain.charAt(i)))
+				{
+					innerChain.deleteCharAt(i);
+				}
+			}
 
 			int chainLength = reactPolymer(innerChain);
 
@@ -55,23 +64,17 @@ public class Day201805 extends AbstractDay
 			}
 		}
 
+		System.out.println(System.currentTimeMillis() - time);
+
 		return smallest;
 	}
 
-	private List<Character> getPolymer()
+	private StringBuilder getPolymer()
 	{
-		String polymer = inputFirstLine();
-		List<Character> chain = new ArrayList<>();
-
-		for (char ch : polymer.toCharArray())
-		{
-			chain.add(ch);
-		}
-
-		return chain;
+		return new StringBuilder(inputFirstLine());
 	}
 
-	private int reactPolymer(List<Character> chain)
+	private int reactPolymer(StringBuilder chain)
 	{
 		boolean hasReaction = true;
 
@@ -79,20 +82,19 @@ public class Day201805 extends AbstractDay
 		{
 			hasReaction = false;
 
-			for (int i = 0; i < chain.size() - 1; i++)
+			for (int i = 0; i < chain.length() - 1; i++)
 			{
-				char a = chain.get(i), b = chain.get(i + 1);
+				char a = chain.charAt(i), b = chain.charAt(i + 1);
 
 				if (a != b && Character.toLowerCase(a) == Character.toLowerCase(b))
 				{
-					chain.remove(i);
-					chain.remove(i);
+					chain.delete(i, i + 2);
 					hasReaction = true;
 					break;
 				}
 			}
 		}
 
-		return chain.size();
+		return chain.length();
 	}
 }
