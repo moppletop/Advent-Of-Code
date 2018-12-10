@@ -19,7 +19,7 @@ public class Day201810 extends AbstractDay
 	@Override
 	protected void preSolve()
 	{
-		List<Point> lights = new ArrayList<>(inputList().size());
+		List<Point> points = new ArrayList<>(inputList().size());
 
 		for (String line : inputList())
 		{
@@ -29,7 +29,7 @@ public class Day201810 extends AbstractDay
 			int x = Integer.parseInt(comp[0]), y = Integer.parseInt(comp[1]);
 			int dx = Integer.parseInt(comp[2]), dy = Integer.parseInt(comp[3]);
 
-			lights.add(new Point(x, y, dx, dy));
+			points.add(new Point(x, y, dx, dy));
 		}
 
 		int seconds = 0;
@@ -40,7 +40,7 @@ public class Day201810 extends AbstractDay
 			int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE;
 			int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE;
 
-			for (Point point : lights)
+			for (Point point : points)
 			{
 				point.X += point.Dx;
 				point.Y += point.Dy;
@@ -51,7 +51,7 @@ public class Day201810 extends AbstractDay
 				maxY = Math.max(point.Y, maxY);
 			}
 
-			if (maxX - minX < 100 && maxY - minY < 15)
+			if (maxX - minX < 100 && maxY - minY < 10)
 			{
 				for (int x = minX; x <= maxX; x++)
 				{
@@ -59,7 +59,7 @@ public class Day201810 extends AbstractDay
 					{
 						char ch = '.';
 
-						for (Point light : lights)
+						for (Point light : points)
 						{
 							if (x == light.X && y == light.Y)
 							{
